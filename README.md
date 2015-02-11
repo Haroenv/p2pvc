@@ -69,6 +69,10 @@ Video chat with yourself to test the camera. (Be sure to mute your mic or speake
 
      ./p2pvc [ip address] -v -B -d 200x152
      
+`-n` disables custom color rendering. 
+
+     ./p2pvc [ip address] -v -n
+     
 `-r` sets the refresh rate.
 
      ./p2pvc [ip address] -v -r 10
