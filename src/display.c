@@ -100,7 +100,7 @@ chtype add_pixel(chtype c, int row, int col, int on) {
   }
 }
 
-int draw_braille(char *data, int width, int y, int channels) {
+int draw_braille(char *data, int width, int y, int channels, int color_enabled) {
   int j;
   int row = y/4;
   unsigned char b, g, r;
@@ -113,7 +113,9 @@ int draw_braille(char *data, int width, int y, int channels) {
     int color = get_color(r, g, b);
 
     char braille[2];
-    attron(COLOR_PAIR(color));
+    if (color_enabled) {
+      attron(COLOR_PAIR(color));
+    }
     if (y % 4 == 0) {
       sprintf(braille, "%C", to_braille(0));
     }
@@ -130,7 +132,7 @@ int draw_braille(char *data, int width, int y, int channels) {
   return 0;
 }
 
-int draw_line(char *data, int width, int y, int channels) {
+int draw_line(char *data, int width, int y, int channels, int color_enabled) {
   int j;
   unsigned char b, g, r;
   int intensity;
@@ -144,7 +146,11 @@ int draw_line(char *data, int width, int y, int channels) {
     if (COLORS < 255) {
       color = 0;
     }
-    mvaddch(y, j, val|COLOR_PAIR(color));
+    if (color_enabled) {
+      mvaddch(y, j, val|COLOR_PAIR(color));
+    } else {
+      mvaddch(y, j, val);
+    }
   }
 
   if (y == 0) {

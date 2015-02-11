@@ -58,6 +58,7 @@ void usage(FILE *stream) {
     "  -A    Audio port.\n"
     "  -V    Video port.\n"
     "  -b    Display incoming bandwidth in the top-right of the video display.\n"
+    "  -n    No custom color rendering.\n"
     "  -e    Print stderr (which is by default routed to /dev/null).\n"
     "\n"
     "Report bugs to https://github.com/mofarrell/p2pvc/issues.\n"
@@ -89,9 +90,10 @@ int main(int argc, char **argv) {
   vopt.width = DEFAULT_WIDTH;
   vopt.height = DEFAULT_HEIGHT;
   vopt.render_type = 0;
+  vopt.color_enabled = 1;
   vopt.refresh_rate = 20;
 
-  while ((c = getopt (argc - 1, &(argv[1]), "bvd:A:V:heBr:")) != -1) {
+  while ((c = getopt (argc - 1, &(argv[1]), "bvnd:A:V:heBr:")) != -1) {
     switch (c) {
       case 'v':
         spawn_video = 1;
@@ -115,6 +117,9 @@ int main(int argc, char **argv) {
         break;
       case 'B':
         vopt.render_type = 1;
+        break;
+      case 'n':
+        vopt.color_enabled = 0;
         break;
       case 'h':
         usage(stdout);

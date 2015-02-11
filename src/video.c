@@ -22,6 +22,7 @@ static int width;
 static int height;
 static int depth = COLOR_DEPTH;
 static int render_type; /* 0 default, 1 braille */
+static int color_enabled;
 
 static void callback(connection_t *con, void *data, size_t length) {
   pthread_mutex_lock(&buffer_lock);
@@ -29,9 +30,9 @@ static void callback(connection_t *con, void *data, size_t length) {
   int y = index;
 
   if (render_type == 1) {
-    draw_braille(&(((char*)data)[(sizeof(unsigned long))]), length - (sizeof(unsigned long)), y, depth);
+    draw_braille(&(((char*)data)[(sizeof(unsigned long))]), length - (sizeof(unsigned long)), y, depth, color_enabled);
   } else {
-    draw_line(&(((char*)data)[(sizeof(unsigned long))]), length - (sizeof(unsigned long)), y, depth);
+    draw_line(&(((char*)data)[(sizeof(unsigned long))]), length - (sizeof(unsigned long)), y, depth, color_enabled);
   }
 
   if (disp_bandwidth) {
@@ -68,6 +69,7 @@ int start_video(char *peer, char *port, vid_options_t *vopt) {
   width = GET_WIDTH(vopt->width);
   height = GET_HEIGHT(vopt->height);
   render_type = vopt->render_type;
+  color_enabled = vopt->color_enabled;
   disp_bandwidth = vopt->disp_bandwidth;
 
   init_screen();
